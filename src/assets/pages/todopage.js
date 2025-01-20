@@ -1,7 +1,7 @@
-// import "./about.css";
-import { useState, useReducer } from "react";
+import "./about.css";
+import { useState, useReducer, useEffect } from "react";
 
-const initialState = [];
+const initialState = JSON.parse(localStorage.getItem("todoItems")) || [];
 
 function todoReducer(state, action) {
   switch (action.type) {
@@ -24,7 +24,17 @@ function todoReducer(state, action) {
 
 export default function TodoApp() {
   const [state, dispatch] = useReducer(todoReducer, initialState);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    JSON.parse(localStorage.getItem("darkMode")) || false
+  );
+
+  useEffect(() => {
+    localStorage.setItem("todoItems", JSON.stringify(state));
+  }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   function handleAddItem(item) {
     dispatch({ type: "ADD_ITEM", payload: item });
@@ -43,8 +53,8 @@ export default function TodoApp() {
   }
 
   return (
-    <div className={`container pt-5 pb-5 pb-5 ${darkMode ? "bg-dark text-light" : "bg-light"}`}>
-      <div className={`card ${darkMode ? "bg-dark text-light border border-light" : "bg-light"}`}>
+    <div className={`container mt-5 mb-5 pb-5 ${darkMode ? "bg-dark text-light" : "bg-light"}`}>
+      <div className="card">
         <Header darkMode={darkMode} setDarkMode={setDarkMode} />
         <div className="card-body">
           <Form onAddItem={handleAddItem} />
@@ -63,7 +73,7 @@ export default function TodoApp() {
 function Header({ darkMode, setDarkMode }) {
   return (
     <div className="d-flex justify-content-between align-items-center card-header mb-5">
-      <h1>TodoApp</h1>
+      <h1>Enhanced TodoApp</h1>
       <button
         className="btn btn-outline-secondary"
         onClick={() => setDarkMode(!darkMode)}
@@ -106,14 +116,14 @@ function Form({ onAddItem }) {
       <div className="row">
         <div className="col-md-5">
           <input
-            className="form-control mb-2"
+            className="form-control"
             type="text"
             placeholder="Add item"
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
           />
         </div>
-        <div className="col-md-2 mb-2">
+        <div className="col-md-2">
           <select
             className="form-select"
             value={quantity}
@@ -138,7 +148,7 @@ function Form({ onAddItem }) {
           </select>
         </div>
         <div className="col-md-2">
-          <button className="btn btn-primary mt-2" type="submit">
+          <button className="btn btn-primary" type="submit">
             Add
           </button>
         </div>
