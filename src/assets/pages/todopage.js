@@ -53,8 +53,8 @@ export default function TodoApp() {
   }
 
   return (
-    <div className={`container mt-5 mb-5 pb-5 ${darkMode ? "bg-dark text-light" : "bg-light"}`}>
-      <div className="card">
+    <div className={`container pt-5 pb-5 pb-5 ${darkMode ? "bg-dark text-light" : "bg-light"}`}>
+      <div className={`card ${darkMode ? "bg-dark text-light border border-light" : "bg-light"}`}>
         <Header darkMode={darkMode} setDarkMode={setDarkMode} />
         <div className="card-body">
           <Form onAddItem={handleAddItem} />
@@ -116,14 +116,14 @@ function Form({ onAddItem }) {
       <div className="row">
         <div className="col-md-5">
           <input
-            className="form-control"
+            className="form-control mb-2"
             type="text"
             placeholder="Add item"
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
           />
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2 mb-2">
           <select
             className="form-select"
             value={quantity}
@@ -148,7 +148,7 @@ function Form({ onAddItem }) {
           </select>
         </div>
         <div className="col-md-2">
-          <button className="btn btn-primary" type="submit">
+          <button className="btn btn-primary mt-2" type="submit">
             Add
           </button>
         </div>
@@ -180,7 +180,7 @@ function List({ items, onDeleteItem, onToggleItem }) {
 
 function ListItem({ item, onDeleteItem, onToggleItem }) {
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center">
+    <li className={"list-group-item d-flex justify-content-between align-items-center"}>
       <div>
         <input
           className="form-check-input me-2"
